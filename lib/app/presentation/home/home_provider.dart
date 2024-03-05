@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:totem/app/domain/model/category.dart';
+import 'package:totem/app/domain/model/item.dart';
 import 'package:totem/app/domain/usecases/fetch_categories.dart';
+import 'package:totem/app/presentation/select_item_sheet/select_item_sheet.dart';
 
 class HomeProvider extends ChangeNotifier {
   bool _showingOrdersPanel = false;
@@ -12,19 +14,25 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  final List<Item> _selectedItems = [];
+  List<Item> get selectedItems => _selectedItems;
+  set selectedItems(List<Item>? list) {
+    selectedItems = list;
+    notifyListeners();
+  }
+
   List<Category> _categories = [];
   List<Category> get categories => _categories;
 
   Category? _selectedCategory;
   Category? get selectedCategory => _selectedCategory;
 
-  bool _doPlayOpacityAnim = false;
-  bool get doPlayOpacityAnim => _doPlayOpacityAnim;
+  bool _doPlayListOpacityAnim = false;
+  bool get doPlayListOpacityAnim => _doPlayListOpacityAnim;
 
   final ScrollController _itemsScrollController = ScrollController();
   ScrollController get itemsScrollController => _itemsScrollController;
 
-  // usecase
   late final FetchCategories fetchCategories;
 
   HomeProvider() : fetchCategories = GetIt.instance<FetchCategories>();
@@ -47,15 +55,33 @@ class HomeProvider extends ChangeNotifier {
     _scrollDown();
   }
 
+  void itemClicked(BuildContext context, Item item) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      builder: (context) {
+        return SelectItemSheet(
+          selectedItem: item,
+        );
+      },
+    );
+  }
+
   _playOpacityAnimation(Function func) {
-    _doPlayOpacityAnim = false;
+    _doPlayListOpacityAnim = false;
     notifyListeners();
 
     Future.delayed(
       const Duration(milliseconds: 300),
       () {
         func();
-        _doPlayOpacityAnim = true;
+        _doPlayListOpacityAnim = true;
         notifyListeners();
       },
     );

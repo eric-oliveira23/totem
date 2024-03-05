@@ -17,15 +17,12 @@ class ItemTile extends StatelessWidget {
     final homeProvider = Provider.of<HomeProvider>(context);
 
     return ElementShrinker(
-      onTap: () => {
-        homeProvider.showingOrdersPanel = !homeProvider.showingOrdersPanel,
-      },
+      onTap: () => homeProvider.itemClicked(context, item),
       child: AnimatedContainer(
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(30),
           ),
-          // color: Color(0XFFF8F8F7),
         ),
         padding: const EdgeInsets.all(10),
         duration: const Duration(milliseconds: 500),

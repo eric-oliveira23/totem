@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class ElementShrinker extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
+  final bool animateOnHover;
 
   const ElementShrinker({
     super.key,
     required this.child,
     this.onTap,
+    this.animateOnHover = false,
   });
 
   @override
@@ -57,7 +59,20 @@ class _ElementShrinkerState extends State<ElementShrinker>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      splashFactory: NoSplash.splashFactory,
+      hoverColor: Colors.transparent,
+      onHover: widget.animateOnHover
+          ? (value) {
+              if (value) {
+                _shrinkButtonSize();
+              } else {
+                _restoreButtonSize();
+              }
+            }
+          : null,
       onTap: () {
         Future.delayed(
           Duration(milliseconds: clickAnimationDurationMillis * 2),

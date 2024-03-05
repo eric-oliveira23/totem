@@ -38,6 +38,8 @@ dependencies:
   provider: ^6.1.1
   http: ^1.2.0
   get_it: ^7.6.7
+  flutter_dotenv: ^5.1.0
+  window_manager: ^0.3.8
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +65,7 @@ flutter:
 
   assets:
     - assets/images/
+    - .env
 
   fonts:
   - family: Poppins

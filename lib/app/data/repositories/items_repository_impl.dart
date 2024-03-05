@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:totem/app/data/model/category.dart';
 import 'package:totem/app/domain/model/category.dart';
 import 'package:totem/app/domain/repositories/items_repository.dart';
 import 'package:http/http.dart' as http;
 
 class ItemsRepositoryImpl implements ItemsRepository {
-  final String apiUrl =
-      'https://65c8d53fa4fbc162e112440c.mockapi.io/totem/v1/categories';
+  late final String apiUrl;
+
+  ItemsRepositoryImpl() {
+    apiUrl = 'https://${dotenv.env['API_KEY']}.mockapi.io/totem/v1/categories';
+  }
 
   @override
   Future<List<Category>> fetchAll() async {

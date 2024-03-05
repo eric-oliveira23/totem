@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:totem/app/core/util/device_verifier.dart';
 import 'package:totem/app/presentation/home/home_provider.dart';
+import 'package:totem/app/presentation/select_item_sheet/select_item_sheet.dart';
 
 class OrderSidePanel extends StatelessWidget {
   const OrderSidePanel({
@@ -24,26 +25,43 @@ class OrderSidePanel extends StatelessWidget {
         duration:
             Duration(milliseconds: homeProvider.showingOrdersPanel ? 500 : 300),
         opacity: homeProvider.showingOrdersPanel ? 1 : 0,
-        child: Column(
-          children: [
-            SizedBox(height: size.height * 0.05),
-            Text(
-              "My\nOrder",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: DeviceVerifier.responsiveFontSize(context),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: size.height * 0.05),
+              Text(
+                "My\nOrder",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: DeviceVerifier.responsiveFontSize(context),
+                ),
+                maxLines: 2,
               ),
-              maxLines: 2,
-            ),
-            SizedBox(height: size.width * 0.05),
-            const Divider(
-              endIndent: 20,
-              indent: 20,
-              height: 1,
-              color: Color(0xFFF2F2F2),
-            ),
-            SizedBox(height: size.width * 0.05),
-          ],
+              SizedBox(height: size.width * 0.05),
+              const Divider(
+                endIndent: 20,
+                indent: 20,
+                height: 1,
+                color: Color(0xFFF2F2F2),
+              ),
+              SizedBox(height: size.width * 0.05),
+              ListView.builder(
+                itemCount: homeProvider.selectedItems.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  var item = homeProvider.selectedItems[index];
+                  return Column(
+                    children: [
+                      Image.network(item.image ?? ""),
+                      Text(item.title ?? ""),
+                      const Incrementer(),
+                    ],
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

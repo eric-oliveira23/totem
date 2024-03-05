@@ -77,6 +77,7 @@ class _HomePageState extends State<HomePage> {
                             padding: EdgeInsets.zero,
                             itemCount: homeProvider.categories.length,
                             shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: size.width < 1081 ? 2 : 4,
@@ -92,7 +93,7 @@ class _HomePageState extends State<HomePage> {
 
                           AnimatedOpacity(
                             duration: const Duration(milliseconds: 300),
-                            opacity: homeProvider.doPlayOpacityAnim ? 1 : 0,
+                            opacity: homeProvider.doPlayListOpacityAnim ? 1 : 0,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -112,9 +113,16 @@ class _HomePageState extends State<HomePage> {
                                     itemCount: homeProvider
                                         .selectedCategory?.items?.length,
                                     shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     gridDelegate:
                                         SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: size.width < 1081 ? 3 : 4,
+                                      crossAxisCount:
+                                          DeviceVerifier.isPhone(context)
+                                              ? 2
+                                              : size.width < 1081
+                                                  ? 3
+                                                  : 4,
                                     ),
                                     itemBuilder: (context, index) {
                                       return ItemTile(

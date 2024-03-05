@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:totem/app/presentation/home/home_page.dart';
 import 'package:totem/app/presentation/home/home_provider.dart';
+import 'package:totem/app/presentation/select_item_sheet/selected_item_sheet_provider.dart';
 import 'package:totem/app/presentation/splash/splash_page.dart';
 
 class Totem extends StatelessWidget {
@@ -13,6 +14,10 @@ class Totem extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => HomeProvider(),
+          lazy: true,
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SelectedItemSheetProvider(context),
           lazy: true,
         ),
       ],
